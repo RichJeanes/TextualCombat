@@ -3,11 +3,11 @@ package textualCombat;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.concurrent.Executor;
 
 public class MainThread {
 
     static boolean running = true;
+    static LobbyThread lobby;
     
     public static void main(String[] args) {
         
@@ -21,12 +21,13 @@ public class MainThread {
             System.exit(1);
         }
         
-        //create thread pool
+        lobby = new LobbyThread();
+        lobby.start();
         
         while(running) {
             try{
                 //threadFromPool(sock.accept());
-                new ClientThread(Thread.currentThread(), sock.accept()).start();
+                lobby.clientJoiningLobby(sock.accept());
                 System.out.println("Got new client.");
                 
             } catch (IOException e) {

@@ -12,8 +12,7 @@ public class ClientThread extends Thread {
     private BufferedReader in;
     private PrintWriter out;
     
-    private PlayerCharacter characterInfo;
-    
+    //If constructor gets a socket, new client needs to be initialized
     public ClientThread(Thread parent, Socket client) {
         this.parent = parent;
         this.client = new SocketBundle(client);
@@ -22,6 +21,7 @@ public class ClientThread extends Thread {
         out = this.client.getOut();
     }
     
+    //If constructor gets a bundle, client is existing
     public ClientThread(Thread parent, SocketBundle client) {
         this.parent = parent;
         this.client = client;
@@ -52,9 +52,5 @@ public class ClientThread extends Thread {
     
     public Thread getParent() {
         return parent;
-    }
-    
-    public void setCharacter(PlayerCharacter characterInfo) {
-        this.characterInfo = characterInfo;
     }
 }

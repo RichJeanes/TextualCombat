@@ -10,6 +10,7 @@ public class SocketBundle {
     private Socket client;
     private BufferedReader in;
     private PrintWriter out;
+    private PlayerCharacter playerInfo;
     
     public SocketBundle(Socket client) {
         this.client = client;
