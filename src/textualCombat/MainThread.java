@@ -27,7 +27,6 @@ public class MainThread {
         while(running) {
             try{
                 lobby.clientJoiningLobby(sock.accept());
-                System.out.println("Got new client.");
                 
             } catch (IOException e) {
                 System.err.println("Problem accepting new client.");

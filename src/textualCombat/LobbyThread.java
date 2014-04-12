@@ -22,19 +22,21 @@ public class LobbyThread extends Thread {
         clients.add(lct);
         lct.write("Welcome to the lobby, " + lct);
         
-        System.out.println("Number of players in lobby: " + clients.size());
+        int lobbyists = clients.size();
+        if(matchMakingQueue != null) lobbyists++;
+        System.out.println("Number of players in lobby: " + lobbyists);
     }
     
     public void clientForMatchMaking(LobbyClientThread client) {
         if(matchMakingQueue == null) {
             matchMakingQueue = client;
+            clients.remove(client);
             System.out.println(client + " queued up for match making");
         } else {
             System.out.println("here");
             InstanceThread it = new InstanceThread(matchMakingQueue, client);
             it.start();
             matchMakingQueue = null;
-            clients.remove(matchMakingQueue);
             clients.remove(client);
             System.out.println(matchMakingQueue + " and " + client + " have entered a match.");
         }
