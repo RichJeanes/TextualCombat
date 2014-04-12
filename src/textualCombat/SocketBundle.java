@@ -20,6 +20,13 @@ public class SocketBundle {
         } catch(IOException e) {
             System.err.println("Error creating socket IO");
         }
+        
+        out.println("Welcome to Textual Combat!!!\n");
+        out.print("What is your user name? ");
+        
+        //TODO Read user input and validate against db
+        //If username does not exist, prompt to create account
+        //String clientUsername = in.readLine(); or something close to this
     }
     
     public void setIn(BufferedReader in) {
