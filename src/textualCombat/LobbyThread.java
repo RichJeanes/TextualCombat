@@ -14,7 +14,7 @@ public class LobbyThread extends Thread {
     
     @Override
     public void run() {
-        super.run();
+        
     }
     
     public void clientJoiningLobby(Socket client){

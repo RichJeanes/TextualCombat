@@ -26,7 +26,6 @@ public class MainThread {
         
         while(running) {
             try{
-                //threadFromPool(sock.accept());
                 lobby.clientJoiningLobby(sock.accept());
                 System.out.println("Got new client.");
                 

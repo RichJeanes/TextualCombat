@@ -22,12 +22,21 @@ public class SocketBundle {
             System.err.println("Error creating socket IO");
         }
         
-        out.println("Welcome to Textual Combat!!!\n");
-        out.print("What is your user name? ");
+        out.println("\n\nWelcome to Textual Combat!!!\n");
+        out.println("What is your user name?");
         
         //TODO Read user input and validate against db
         //If username does not exist, prompt to create account
         //String clientUsername = in.readLine(); or something close to this
+        
+        //Placeholder until actual login is working
+        try {
+            playerInfo = new PlayerCharacter(in.readLine());
+        } catch (IOException e) {
+            System.err.println("Problem reading from client.");
+        }
+        
+        out.println("Welcome to the lobby, " + playerInfo);
     }
     
     public void setIn(BufferedReader in) {
