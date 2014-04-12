@@ -54,9 +54,10 @@ public class SocketBundle {
     
     public void close() {
         try {
+            client.close();
             in.close();
             out.close();
-            client.close();
+            System.out.println("Socket Bundle close");
         } catch(IOException e) {
             System.err.println("Error closing socket IO stuff.");
         }

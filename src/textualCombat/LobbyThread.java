@@ -7,7 +7,6 @@ public class LobbyThread extends Thread {
     private ArrayList<LobbyClientThread> clients;
     private LobbyClientThread matchMakingQueue;
     
-    private boolean alive = true;
     
     public LobbyThread() {
         clients = new ArrayList();
@@ -15,10 +14,7 @@ public class LobbyThread extends Thread {
     }
     
     @Override
-    public void run() {
-        while(alive);
-        return;
-    }
+    public void run() {}
     
     public void clientJoiningLobby(Socket client){
         LobbyClientThread lct = new LobbyClientThread(this, client);
@@ -32,13 +28,15 @@ public class LobbyThread extends Thread {
     public void clientForMatchMaking(LobbyClientThread client) {
         if(matchMakingQueue == null) {
             matchMakingQueue = client;
+            System.out.println(client + " queued up for match making");
         } else {
-            new InstanceThread(matchMakingQueue, client).start();
+            System.out.println("here");
+            InstanceThread it = new InstanceThread(matchMakingQueue, client);
+            it.start();
             matchMakingQueue = null;
+            clients.remove(matchMakingQueue);
+            clients.remove(client);
+            System.out.println(matchMakingQueue + " and " + client + " have entered a match.");
         }
-    }
-    
-    public void kill() {
-        alive = false;
     }
 }

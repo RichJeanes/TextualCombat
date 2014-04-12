@@ -19,8 +19,8 @@ public class ClientThread extends Thread {
     }
     
     public void close() {
+        System.out.println("Client Thread close");
         client.close();
-        this.stop();
     }
     
     public String toString() {

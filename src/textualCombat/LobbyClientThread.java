@@ -19,17 +19,25 @@ public class LobbyClientThread extends ClientThread{
     @Override
     public void run() {
         String input = null;
+        boolean alive = true;
         
-        while(true) {
+        while(alive) {
             input = client.read();
+            System.out.println(client + " sent command " + input);
             
-            switch(input) {
-                case "queue":
-                    parent.clientForMatchMaking(this);
-                    break;
-                
-                case "exit":
-                    client.close();
+            try {
+                switch(input) {                 
+                    case "queue":
+                        parent.clientForMatchMaking(this);
+                        System.out.println(client + " has requested to be queued.");
+                        break;
+
+                    case "exit":
+                        client.close();
+                }
+            } catch(NullPointerException npe) {
+                System.out.println("Connection terminated");
+                alive = false;
             }
         }
     }
