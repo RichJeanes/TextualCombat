@@ -5,27 +5,40 @@ import java.util.ArrayList;
 
 public class LobbyThread extends Thread {
     private ArrayList<LobbyClientThread> clients;
-    private ArrayList<LobbyClientThread> matchMakingQueue;
+    private LobbyClientThread matchMakingQueue;
+    
+    private boolean alive = true;
     
     public LobbyThread() {
         clients = new ArrayList();
-        matchMakingQueue = new ArrayList(2);
+        matchMakingQueue = null;
     }
     
     @Override
     public void run() {
-        
+        while(alive);
+        return;
     }
     
     public void clientJoiningLobby(Socket client){
-        clients.add(new LobbyClientThread(Thread.currentThread(), client));
+        LobbyClientThread lct = new LobbyClientThread(this, client);
+        lct.start();
+        clients.add(lct);
+        lct.write("Welcome to the lobby, " + lct);
+        
+        System.out.println("Number of players in lobby: " + clients.size());
     }
     
     public void clientForMatchMaking(LobbyClientThread client) {
-        //add given thread to match making
-        
-        //check if there are 2 people in match making
-            //if yes, spawn instance and remove clients from clients<> and queue<>
-            //if no, do nothing
+        if(matchMakingQueue == null) {
+            matchMakingQueue = client;
+        } else {
+            new InstanceThread(matchMakingQueue, client).start();
+            matchMakingQueue = null;
+        }
+    }
+    
+    public void kill() {
+        alive = false;
     }
 }

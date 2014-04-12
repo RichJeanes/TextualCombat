@@ -35,32 +35,34 @@ public class SocketBundle {
         } catch (IOException e) {
             System.err.println("Problem reading from client.");
         }
+    }
+    
+    public void write(String input) {
+        out.println(input);
+        out.flush();
+    }
+    
+    public String read() {
+        try {
+            return in.readLine();
+        } catch (IOException ex) {
+            System.err.println("Problem reading from client.");
+        }
         
-        out.println("Welcome to the lobby, " + playerInfo);
-    }
-    
-    public void setIn(BufferedReader in) {
-        this.in = in;
-    }
-    
-    public void setOut(PrintWriter out) {
-        this.out = out;
-    }
-    
-    public BufferedReader getIn() {
-        return in;
-    }
-    
-    public PrintWriter getOut() {
-        return out;
+        return null;
     }
     
     public void close() {
         try {
             in.close();
             out.close();
+            client.close();
         } catch(IOException e) {
             System.err.println("Error closing socket IO stuff.");
         }
+    }
+    
+    public String toString() {
+        return playerInfo.toString();
     }
 }
