@@ -23,6 +23,8 @@ public class LobbyClientThread extends ClientThread {
         boolean alive = true;
 
         client = new SocketBundle(tempSocket);
+        client.write("Welcome to the lobby, " + client);
+        client.write("There are currently " + MainThread.lobby.clientsInLobby() + " players in the lobby.");
         
         while (alive) {
             input = client.read();
