@@ -94,7 +94,8 @@ public class InstanceClientThread extends ClientThread {
     public String printHelp() {
         return "\r\nAvailable combat commands:\r\n"
                 + "attack: Attempt to hit opponent with a melee attack\r\n"
-                + "defend: Attempt to deflect opponent's attack and cause a stagger\r\n"
+                + "defend: Attempt to deflect opponent's attack\r\n"
+                + "dodge:  Attempt to completely avoid damage from your opponent\r\n"
                 + "help:   Print this help statement\r\n";
     }
 }
