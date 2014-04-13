@@ -1,15 +1,15 @@
 package textualCombat;
 
 import java.net.Socket;
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class LobbyThread extends Thread {
 
-    private ArrayList<LobbyClientThread> clients;
+    private LinkedList<LobbyClientThread> clients;
     private LobbyClientThread matchMakingQueue;
 
     public LobbyThread() {
-        clients = new ArrayList();
+        clients = new LinkedList();
         matchMakingQueue = null;
     }
 
@@ -41,15 +41,20 @@ public class LobbyThread extends Thread {
 
             matchMakingQueue = null;
             clients.remove(client);
+            
             System.out.println(matchMakingQueue + " and " + client + " have entered a match.");
         }
     }
     
     public int clientsInLobby() {
         int lobbyists = clients.size();
-        if (matchMakingQueue != null) {
-            lobbyists++;
+        if (matchMakingQueue == null) {
+            return lobbyists;
         }
-        return lobbyists;
+        return lobbyists++;
+    }
+    
+    public void removeClient(LobbyClientThread client) {
+        clients.remove(client);
     }
 }

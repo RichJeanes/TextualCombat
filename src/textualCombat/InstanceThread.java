@@ -57,16 +57,18 @@ public class InstanceThread extends Thread {
 
                 switch (player0.getAction()) {
                     case 0:
-                        if ((dieRoll + player0.getPlayerInfo().getStr()) >= 19) {
-                            player0.write("Critical hit!");
-                            dmgToPlayer1 += player0.getPlayerInfo().getDmg() * 2;
-                        } else if (luckRoll > 96) {
-                            player0.write("You got a lucky hit!");
-                            dmgToPlayer1 += player0.getPlayerInfo().getDmg() * 1.6;
-                        } else {
-                            dmgToPlayer1 += player0.getPlayerInfo().getDmg();
+                        if((dieRoll + player0.getPlayerInfo().getDef()) > 8) {
+                            if ((dieRoll + player0.getPlayerInfo().getStr()) >= 19) {
+                                player0.write("Critical hit!");
+                                dmgToPlayer1 += player0.getPlayerInfo().getDmg() * 2;
+                            } else {
+                                dmgToPlayer1 += player0.getPlayerInfo().getDmg();
+                            }
                         }
-
+                            if (luckRoll > 96) {
+                                player0.write("You got a lucky hit!");
+                                dmgToPlayer1 += player0.getPlayerInfo().getDmg() * 1.6;
+                            }
                         break;
 
                     case 1:

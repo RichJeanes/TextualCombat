@@ -22,9 +22,18 @@ public class LobbyClientThread extends ClientThread {
         String input = null;
         boolean alive = true;
 
-        client = new SocketBundle(tempSocket);
-        client.write("Welcome to the lobby, " + client);
-        client.write("There are currently " + MainThread.lobby.clientsInLobby() + " players in the lobby.");
+        if(client == null) {
+            client = new SocketBundle(tempSocket);
+            client.write("Welcome to the lobby, " + client);
+        } else {
+            client.write("\r\nWelcome back to the lobby, " + client);
+        }
+        int clientCount = MainThread.lobby.clientsInLobby() ;
+        if(clientCount == 1) {
+            client.write("You are all alone.");
+        } else {
+            client.write("There are " + clientCount + " players with you.");
+        }
         
         while (alive) {
             input = client.read();
@@ -42,6 +51,7 @@ public class LobbyClientThread extends ClientThread {
 
                     case "exit":
                         client.close();
+                        parent.removeClient(this);
                         return;
 
                     case "whatdo":
