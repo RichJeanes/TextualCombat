@@ -1,32 +1,33 @@
 package textualCombat;
 
-public class InstanceClientThread extends ClientThread{
-    
+public class InstanceClientThread extends ClientThread {
+
     private InstanceThread parent;
     private int id;
     private int action;
     private boolean actionTaken;
-    
+    private boolean alive;
+
     public InstanceClientThread(InstanceThread parent, SocketBundle client, int id) {
         this.parent = parent;
         this.client = client;
         this.id = id;
     }
-    
+
     public void run() {
         String input = null;
-        boolean alive = true;
-        
+        alive = true;
+
         actionTaken = false;
-        
-        while(alive) {
+
+        while (alive) {
             input = client.read();
             System.out.println(client + " sent command " + input.toLowerCase().trim());
-            
+
             try {
-                switch(input.toLowerCase().trim()) {
-                    case "attack": 
-                        if(!actionTaken) {
+                switch (input.toLowerCase().trim()) {
+                    case "attack":
+                        if (!actionTaken) {
                             action = 0;
                             actionTaken = true;
                         } else {
@@ -34,8 +35,8 @@ public class InstanceClientThread extends ClientThread{
                         }
                         break;
 
-                    case "defend": 
-                        if(!actionTaken) {
+                    case "defend":
+                        if (!actionTaken) {
                             action = 1;
                             actionTaken = true;
                         } else {
@@ -44,7 +45,7 @@ public class InstanceClientThread extends ClientThread{
                         break;
 
                     case "dodge":
-                        if(!actionTaken) {
+                        if (!actionTaken) {
                             action = 2;
                             actionTaken = true;
                         } else {
@@ -55,19 +56,22 @@ public class InstanceClientThread extends ClientThread{
                     case "help":
                         client.write(printHelp());
                         break;
+                        
+                    case "join":
+                        client.write("Welcome back to the player lobby.");
+                        break;
 
                     default:
                         client.write("Invalid command: " + input);
                         client.write("Type 'help' for a list of valid commands.");
                 }
-                
-                if(id == 0 && actionTaken) {
+
+                if (id == 0 && actionTaken) {
                     parent.setPlayer0ActionQueued();
-                }
-                else if(actionTaken) {
+                } else if (actionTaken) {
                     parent.setPlayer1ActionQueued();
                 }
-                
+
             } catch (NullPointerException npe) {
                 System.err.println("Connection terminated");
                 alive = false;
@@ -75,17 +79,22 @@ public class InstanceClientThread extends ClientThread{
         }
     }
     
+    public void stopThread() {
+        alive = false;
+    }
+
     public int getAction() {
         return action;
     }
-    
+
     public void resetActionTaken() {
         actionTaken = false;
     }
+
     public String printHelp() {
-        return "\r\nAvailable combat commands:\r\n" +
-               "attack: Attempt to hit opponent with a melee attack\r\n" +
-               "defend: Attempt to deflect opponent's attack and cause a stagger\r\n" +
-               "help:   Print this help statement\r\n";              
+        return "\r\nAvailable combat commands:\r\n"
+                + "attack: Attempt to hit opponent with a melee attack\r\n"
+                + "defend: Attempt to deflect opponent's attack and cause a stagger\r\n"
+                + "help:   Print this help statement\r\n";
     }
 }

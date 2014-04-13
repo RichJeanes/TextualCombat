@@ -13,20 +13,19 @@ public class InstanceThread extends Thread {
 
         player0 = new InstanceClientThread(this, p0, 0);
         player1 = new InstanceClientThread(this, p1, 1);
-
-        player0.start();
-        player1.start();
     }
 
     @Override
     public void run() {
+        player0.start();
+        player1.start();
+        
         player0.write("You're in combat with " + player1);
         player1.write("You're in combat with " + player0);
         System.out.println(player0 + " vs " + player1);
 
         player0.write("FIGHT!");
         player1.write("FIGHT!");
-        System.out.println("FIGHT!");
 
         currentHealths = new int[2];
         currentHealths[0] = player0.getPlayerInfo().getHealth();
@@ -36,15 +35,16 @@ public class InstanceThread extends Thread {
         boolean combatOccurring = true;
 
         while (combatOccurring) {
+
+            player0.write("Make your move:");
+            player1.write("Make your move:");
+
             try {
                 while (!getBothPlayerActionQueued()) {
                     Thread.sleep(500);
                 }
             } catch (InterruptedException ie) {
             }
-
-            player0.write("Make your move:");
-            player1.write("Make your move:");
 
             if (getBothPlayerActionQueued()) {
                 //do combat maths
@@ -161,8 +161,8 @@ public class InstanceThread extends Thread {
                 currentHealths[0] -= dmgDealtToPlayer0;
                 currentHealths[1] -= dmgDealtToPlayer1;
 
-                player0.write("You hit for " + dmgDealtToPlayer1);
-                player1.write("You hit for " + dmgDealtToPlayer0);
+                player0.write("\r\nYou hit for " + dmgDealtToPlayer1);
+                player1.write("\r\nYou hit for " + dmgDealtToPlayer0);
 
                 player0.write("You have " + currentHealths[0] + " health remaining\r\n");
                 player1.write("You have " + currentHealths[1] + " health remaining\r\n");
@@ -181,8 +181,15 @@ public class InstanceThread extends Thread {
                         endMatch(3);
                     }
 
+                    player0.stopThread();
+                    player1.stopThread();
                     MainThread.lobby.clientJoiningLobby(player0.getSocketBundle());
                     MainThread.lobby.clientJoiningLobby(player1.getSocketBundle());
+                    combatOccurring = false;
+                    
+                    player0.write("Type \'join\' to return to the lobby!");
+                    player1.write("Type \'join\' to return to the lobby!");
+                    
                     return;
                 }
 
@@ -220,26 +227,26 @@ public class InstanceThread extends Thread {
             // player 0 wins legitmately
             case 3:
                 player0.write("You have slain you opponent!");
-                player0.write("You live to fight another day.");
+                player0.write("You live to fight another day.\r\n");
 
-                player1.write("You have been defeated!");
+                player1.write("You have been defeated!\r\n");
                 break;
 
             // player 1 wins legitimately
             case 4:
                 player1.write("You have slain you opponent!");
-                player1.write("You live to fight another day.");
+                player1.write("You live to fight another day.\r\n");
 
-                player0.write("You have been defeated!");
+                player0.write("You have been defeated!\r\n");
                 break;
 
             // draw (somehow?)
             case 5:
                 player0.write("You have slain eachother simultaneously.");
-                player0.write("How unfortunate...");
-                
+                player0.write("How unfortunate...\r\n");
+
                 player1.write("You have slain eachother simultaneously.");
-                player1.write("How unfortunate...");
+                player1.write("How unfortunate...\r\n");
                 break;
         }
     }

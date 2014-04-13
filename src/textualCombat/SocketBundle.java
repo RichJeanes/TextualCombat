@@ -7,29 +7,29 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 public class SocketBundle {
+
     private Socket client;
     private BufferedReader in;
     private PrintWriter out;
     private PlayerCharacter playerInfo;
-    
+
     public SocketBundle(Socket client) {
         this.client = client;
-        
+
         try {
             in = new BufferedReader(new InputStreamReader(client.getInputStream()));
             out = new PrintWriter(client.getOutputStream(), true);
-        } catch(IOException e) {
+        } catch (IOException e) {
             System.err.println("Error creating socket IO");
         }
-        
+
         out.print("\r\n\r\nWelcome to Textual Combat!!!\r\n\r\n");
         out.print("What is your user name?\r\n");
         out.flush();
-        
+
         //TODO Read user input and validate against db
         //If username does not exist, prompt to create account
         //String clientUsername = in.readLine(); or something close to this
-        
         //Placeholder until actual login is working
         try {
             playerInfo = new PlayerCharacter(in.readLine());
@@ -39,37 +39,37 @@ public class SocketBundle {
             System.err.println("Problem reading from client.");
         }
     }
-    
+
     public PlayerCharacter getPlayerInfo() {
         return playerInfo;
     }
-    
+
     public void write(String input) {
         out.print(input + "\r\n");
         out.flush();
     }
-    
+
     public String read() {
         try {
             return in.readLine();
         } catch (IOException ex) {
             System.err.println("Problem reading from client.");
         }
-        
+
         return null;
     }
-    
+
     public void close() {
         try {
             client.close();
             in.close();
             out.close();
             System.out.println("Socket Bundle close");
-        } catch(IOException e) {
+        } catch (IOException e) {
             System.err.println("Error closing socket IO stuff.");
         }
     }
-    
+
     public String toString() {
         return playerInfo.toString();
     }
