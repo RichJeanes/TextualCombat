@@ -43,6 +43,9 @@ public class InstanceThread extends Thread {
                 }
             } catch(InterruptedException ie) {}
             
+            player0.write("Make your move:");
+            player1.write("Make your move:");
+            
             if(getBothPlayerActionQueued()) {
                    //do combat maths
                    int dieRoll = rand.nextInt(20);
@@ -167,17 +170,24 @@ public class InstanceThread extends Thread {
                    player0.write("You hit for " + dmgDealtToPlayer1);
                    player1.write("You hit for " + dmgDealtToPlayer0);
                    
-                   player0.write("You have " + currentHealths[0] + " health remaining");
-                   player1.write("You have " + currentHealths[1] + " health remaining");
-                   
-                   //determine if match is over
-                   //eg check hp
-                   
-                   
+                   player0.write("You have " + currentHealths[0] + " health remaining\r\n");
+                   player1.write("You have " + currentHealths[1] + " health remaining\r\n");
+                                      
                    player0.resetActionTaken();
                    player1.resetActionTaken();
                    player0ActionQueued = false;
                    player1ActionQueued = false;
+                   
+                   if((currentHealths[0] <= 0) && (currentHealths[1] <= 0)) {
+                       endMatch(5);
+                       MainThread.lobby.clientJoiningLobby(player0.getSocketBundle());
+                       MainThread.lobby.clientJoiningLobby(player1.getSocketBundle());
+                       return;
+                   } else if(currentHealths[0] <= 0) {
+                       endMatch(4);
+                   } else if(currentHealths[1] <= 0) {
+                       endMatch(3);
+                   }
                    
             } else {
                 if(player0ActionQueued) {
