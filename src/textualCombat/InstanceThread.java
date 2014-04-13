@@ -111,7 +111,7 @@ public class InstanceThread extends Thread {
                        case 0:
                            if((dieRoll + player1.getPlayerInfo().getStr()) >= 19) {
                                player1.write("Critical hit!");
-                               player1.write("You hit for " + (player1.getPlayerInfo().getDmg() * 2));
+                               
                                dmgToPlayer0 += player1.getPlayerInfo().getDmg() * 2;
                            } else if(luckRoll > 96) {
                                player1.write("You got a lucky hit!");
@@ -158,8 +158,14 @@ public class InstanceThread extends Thread {
                            break;
                    }
                    
-                   currentHealths[0] -= dmgToPlayer0 * player0DmgMod;
-                   currentHealths[1] -= dmgToPlayer1 * player1DmgMod;
+                   int dmgDealtToPlayer0 = (int) (dmgToPlayer0 * player0DmgMod);
+                   int dmgDealtToPlayer1 = (int) (dmgToPlayer1 * player1DmgMod);
+                   
+                   currentHealths[0] -= dmgDealtToPlayer0;
+                   currentHealths[1] -= dmgDealtToPlayer1;
+                   
+                   player0.write("You hit for " + dmgDealtToPlayer1);
+                   player1.write("You hit for " + dmgDealtToPlayer0);
                    
                    player0.write("You have " + currentHealths[0] + " health remaining");
                    player1.write("You have " + currentHealths[1] + " health remaining");

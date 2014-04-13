@@ -33,7 +33,6 @@ public class LobbyClientThread extends ClientThread{
                 switch(input.toLowerCase().trim()) {                 
                     case "queue":
                         parent.clientForMatchMaking(this);
-                        System.out.println(client + " has requested to be queued.");
                         return;
 
                     case "help":
