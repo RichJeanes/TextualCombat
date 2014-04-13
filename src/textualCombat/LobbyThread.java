@@ -21,14 +21,6 @@ public class LobbyThread extends Thread {
         LobbyClientThread lct = new LobbyClientThread(this, client);
         lct.start();
         clients.add(lct);
-        lct.write("Welcome to the lobby, " + lct);
-
-        int lobbyists = clients.size();
-        if (matchMakingQueue != null) {
-            lobbyists++;
-        }
-        System.out.println("Number of players in lobby: " + lobbyists);
-        lct.write("Number of players in lobby: " + lobbyists);
     }
 
     public void clientJoiningLobby(SocketBundle client) {
@@ -51,5 +43,13 @@ public class LobbyThread extends Thread {
             clients.remove(client);
             System.out.println(matchMakingQueue + " and " + client + " have entered a match.");
         }
+    }
+    
+    public int clientsInLobby() {
+        int lobbyists = clients.size();
+        if (matchMakingQueue != null) {
+            lobbyists++;
+        }
+        return lobbyists;
     }
 }
