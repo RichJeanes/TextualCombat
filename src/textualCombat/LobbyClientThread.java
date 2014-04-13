@@ -5,10 +5,11 @@ import java.net.Socket;
 public class LobbyClientThread extends ClientThread {
 
     LobbyThread parent;
+    Socket tempSocket;
 
     public LobbyClientThread(LobbyThread parent, Socket client) {
         this.parent = parent;
-        this.client = new SocketBundle(client);
+        this.tempSocket = client;
     }
 
     public LobbyClientThread(LobbyThread parent, SocketBundle client) {
@@ -21,6 +22,8 @@ public class LobbyClientThread extends ClientThread {
         String input = null;
         boolean alive = true;
 
+        client = new SocketBundle(tempSocket);
+        
         while (alive) {
             input = client.read();
             System.out.println(client + " sent command " + input);
@@ -59,7 +62,7 @@ public class LobbyClientThread extends ClientThread {
 
         }
     }
-
+    
     public String printHelp() {
         return "\r\nAvailable lobby commands:\r\n"
                 + "queue: Places you in the match making queue to find an opponent\r\n"
