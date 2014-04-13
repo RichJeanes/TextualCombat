@@ -55,12 +55,12 @@ public class SocketBundle {
                 password_correct = database.check_user_and_password(player_name, user_password);
                 if (password_correct) {
                     //password was correct
-                    out.write("Welcome back, " + player_name + ".");
+                    out.write("Welcome back, " + player_name + ".\r\n");
                     out.flush();
                     break;
                 } else {
                     //password was not correct
-                    out.write("Please try again.");
+                    out.write("Please try again.\r\n");
                     out.flush();
                 }
             }
@@ -68,16 +68,25 @@ public class SocketBundle {
         } else {
             //User Does Not Exists.
             //ask for a new password.
-            out.write("Welcome to Textual Combat.\r\nPlease create a password:\r\n");
+            out.write("Please create a password:\r\n");
             out.flush();
             String user_password = null;
+            while(true){
             try {
-                user_password = in.readLine();
-            } catch (IOException ex) {
-                System.err.println("Problem getting password from user.");
+                	user_password = in.readLine();
+            	} catch (IOException ex) {
+            		System.err.println("Problem getting password from user.");
+            	}
+            	if(user_password.equals("")||user_password==null){
+            		out.write("Password cant be empty!\r\n");
+            		out.flush();
+            	}else{
+            		//add user to DB.
+            		database.add_user(database.new_user_item(player_name, user_password));
+            		break;
+            	}
             }
-            //add user to DB.
-            database.add_user(database.new_user_item(player_name, user_password));
+            
         }
         boolean char_exist = database.does_char_exist(player_name);
         if (char_exist) {

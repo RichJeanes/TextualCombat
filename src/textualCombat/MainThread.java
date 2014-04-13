@@ -1,5 +1,6 @@
 package textualCombat;
 
+
 import java.io.IOException;
 import java.net.ServerSocket;
 
@@ -22,7 +23,7 @@ public class MainThread {
             sock = new ServerSocket(port);
             System.out.println("Textual Combat v0.1.turtle started on port " + port);
         } catch (IOException e) {
-            System.err.println("Port taken. Is there another instance of this running");
+            System.err.println("Port taken. Is there another instance of this running?");
             System.exit(1);
         }
 

@@ -33,10 +33,11 @@ public class LobbyClientThread extends ClientThread {
         if(clientCount == 1) {
             client.write("You are all alone.");
         } else {
-            client.write("There are " + clientCount + " players with you.");
+            client.write("There are " + (clientCount - 1) + " players with you."); //-1 for you
         }
         
         client.write(client + "'s stats:\r\n" 
+        		   + client.getPlayerInfo().getWins() + " wins\r\n"
         		   + client.getPlayerInfo().getHealth() + " health\r\n"
         		   + client.getPlayerInfo().getStr() + " strength\r\n"
         		   + client.getPlayerInfo().getDef() + " defense\r\n"

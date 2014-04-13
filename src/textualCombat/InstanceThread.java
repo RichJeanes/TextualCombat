@@ -139,6 +139,7 @@ public class InstanceThread extends Thread {
                             player1.write("You got in a lucky hit!");
                             dmgToPlayer0 += player1.getPlayerInfo().getDmg() * .2;
                         }
+           
                         break;
 
                     case 2:

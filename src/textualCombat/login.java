@@ -110,7 +110,8 @@ public class login {
     }
 
     public boolean check_user_and_password(String user_name, String user_password) {
-        HashMap<String, Condition> scanFilter = new HashMap<String, Condition>();
+        if( user_password==null|| user_password.equals("")) return false;
+    	HashMap<String, Condition> scanFilter = new HashMap<String, Condition>();
         Condition condition = new Condition()
                 .withComparisonOperator(ComparisonOperator.EQ.toString())
                 .withAttributeValueList(new AttributeValue().withS(user_name));
