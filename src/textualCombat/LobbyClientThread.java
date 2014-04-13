@@ -42,7 +42,7 @@ public class LobbyClientThread extends ClientThread{
                         
                     case "exit":
                         client.close();
-                        break;
+                        return;
                         
                     case "whatdo":
                         client.write(printWhatDo());

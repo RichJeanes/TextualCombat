@@ -46,14 +46,11 @@ public class MainThread {
         }
     }
     
-    public static void stop() {
-        //running = false;
-        System.exit(0);
-    }
-    
     public static void stopServer() {
         try {
             sock.close();
+            running = false;
+            System.exit(0);
         } catch (IOException ex) {
             Logger.getLogger(MainThread.class.getName()).log(Level.SEVERE, null, ex);
         }
