@@ -24,6 +24,7 @@ public class SocketBundle {
         
         out.print("\r\n\r\nWelcome to Textual Combat!!!\r\n\r\n");
         out.print("What is your user name?\r\n");
+        out.flush();
         
         //TODO Read user input and validate against db
         //If username does not exist, prompt to create account

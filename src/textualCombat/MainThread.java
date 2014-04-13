@@ -3,8 +3,6 @@ package textualCombat;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class MainThread {
 
@@ -37,7 +35,6 @@ public class MainThread {
         while(running) {
             try{
                 lobby.clientJoiningLobby(sock.accept());
-                
             } catch (IOException e) {
                 System.err.println("Problem accepting new client.");
             } finally {
@@ -52,7 +49,7 @@ public class MainThread {
             running = false;
             System.exit(0);
         } catch (IOException ex) {
-            Logger.getLogger(MainThread.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("There was a problem connecting a client.");
         }
     }
     
