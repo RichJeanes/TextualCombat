@@ -1,6 +1,8 @@
 package textualCombat;
 
 import java.util.Map;
+import java.util.Random;
+
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 
 public class PlayerCharacter {
@@ -19,12 +21,12 @@ public class PlayerCharacter {
         this.name = name;
         database = new login();
         Map<String, AttributeValue> user_char = database.find_char(name);
-        health = Integer.parseInt(user_char.get("health").getS());
-        damage = Integer.parseInt(user_char.get("attack").getS());
-        defense = Integer.parseInt(user_char.get("defence").getS());
-        strength = Integer.parseInt(user_char.get("strength").getS());
-        agility = Integer.parseInt(user_char.get("agility").getS());
-        wins = Integer.parseInt(user_char.get("wins").getS());
+        health = Integer.parseInt(user_char.get("health").getN());
+        damage = Integer.parseInt(user_char.get("attack").getN());
+        defense = Integer.parseInt(user_char.get("defence").getN());
+        strength = Integer.parseInt(user_char.get("strength").getN());
+        agility = Integer.parseInt(user_char.get("agility").getN());
+        wins = Integer.parseInt(user_char.get("wins").getN());
     }
 
     public String getName() {
@@ -78,6 +80,29 @@ public class PlayerCharacter {
 
     public int getWins() {
         return wins;
+    }
+    
+    public void levelUp() {
+    	Random rand = new Random();
+    	
+    	switch(rand.nextInt(4)) {
+    	case 0:
+    		damage++;
+    		break;
+    	case 1:
+    		defense++;
+    		break;
+    	case 2:
+    		strength++;
+    		break;
+    	case 3:
+    		agility++;
+    		break;
+    	}
+    	
+    	health += 5;
+    	
+    	database.update_char(name, name, health, damage, defense, strength, agility, wins);
     }
     
     public String toString() {

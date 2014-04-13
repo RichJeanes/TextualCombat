@@ -28,12 +28,20 @@ public class LobbyClientThread extends ClientThread {
         } else {
             client.write("\r\nWelcome back to the lobby, " + client);
         }
+        
         int clientCount = MainThread.lobby.clientsInLobby() ;
         if(clientCount == 1) {
             client.write("You are all alone.");
         } else {
             client.write("There are " + clientCount + " players with you.");
         }
+        
+        client.write(client + "'s stats:\r\n" 
+        		   + client.getPlayerInfo().getHealth() + " health\r\n"
+        		   + client.getPlayerInfo().getStr() + " strength\r\n"
+        		   + client.getPlayerInfo().getDef() + " defense\r\n"
+        		   + client.getPlayerInfo().getAgl() + " agility\r\n"
+        		   + client.getPlayerInfo().getDmg() + " damage\r\n");
         
         while (alive) {
             input = client.read();

@@ -2,7 +2,6 @@ package textualCombat;
 
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.net.Socket;
 
 public class MainThread {
 
@@ -11,14 +10,12 @@ public class MainThread {
     static ServerSocket sock;
 
     public static void main(String[] args) {
-
         if (args.length != 1) {
             System.err.println("Give me a port!");
             System.exit(1);
         }
 
         sock = null;
-        Socket newClient = null;
         int port = Integer.parseInt(args[0]);
 
         try {
@@ -37,8 +34,6 @@ public class MainThread {
                 lobby.clientJoiningLobby(sock.accept());
             } catch (IOException e) {
                 System.err.println("Problem accepting new client.");
-            } finally {
-                newClient = null;
             }
         }
     }

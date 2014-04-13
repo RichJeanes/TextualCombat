@@ -43,7 +43,8 @@ public class SocketBundle {
         if (user_exist) {
             boolean password_correct = false;
             //User Exists.
-            out.write("Please type your password:");
+            out.write("Please type your password:\r\n");
+            out.flush();
             while (password_correct == false) {
                 String user_password = null;
                 try {
@@ -55,17 +56,20 @@ public class SocketBundle {
                 if (password_correct) {
                     //password was correct
                     out.write("Welcome back, " + player_name + ".");
+                    out.flush();
                     break;
                 } else {
                     //password was not correct
                     out.write("Please try again.");
+                    out.flush();
                 }
             }
 
         } else {
             //User Does Not Exists.
             //ask for a new password.
-            out.write("Welcome to Textual Combat. Please create a password.");
+            out.write("Welcome to Textual Combat.\r\nPlease create a password:\r\n");
+            out.flush();
             String user_password = null;
             try {
                 user_password = in.readLine();

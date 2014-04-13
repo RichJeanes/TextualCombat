@@ -152,14 +152,14 @@ public class login {
 
         GetItemResult result = dynamoDB.getItem(getItemRequest);
         Map<String, AttributeValue> map = result.getItem();
-        //System.out.println("Yar: " + map.get("user_name").getS());
+        System.out.println("Yar: " + map.toString());
         return map;
     }
 
     public String find_char_name(String user_name) {
         String output;
         HashMap<String, AttributeValue> key = new HashMap<String, AttributeValue>();
-        key.put("user_name", new AttributeValue().withS(user_name));
+        key.put("char_name", new AttributeValue().withS(user_name));
 
         GetItemRequest getItemRequest = new GetItemRequest()
                 .withTableName(table_char)
@@ -220,7 +220,7 @@ public class login {
 
     public boolean does_char_exist(String user_name) {
         HashMap<String, AttributeValue> key = new HashMap<String, AttributeValue>();
-        key.put("user_name", new AttributeValue().withS(user_name));
+        key.put("char_name", new AttributeValue().withS(user_name));
 
         GetItemRequest getItemRequest = new GetItemRequest()
                 .withTableName(table_char)

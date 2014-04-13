@@ -9,7 +9,7 @@ public class LobbyThread extends Thread {
     private LobbyClientThread matchMakingQueue;
 
     public LobbyThread() {
-        clients = new LinkedList();
+        clients = new LinkedList<LobbyClientThread>();
         matchMakingQueue = null;
     }
 

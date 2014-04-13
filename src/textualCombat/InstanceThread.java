@@ -57,8 +57,8 @@ public class InstanceThread extends Thread {
 
                 switch (player0.getAction()) {
                     case 0:
-                        if((dieRoll + player0.getPlayerInfo().getDef()) > 8) {
-                            if ((dieRoll + player0.getPlayerInfo().getStr()) >= 19) {
+                        if((dieRoll + getMod(player0.getPlayerInfo().getStr())) > 8) {
+                            if (dieRoll + getMod(player0.getPlayerInfo().getStr()) >= 19) {
                                 player0.write("Critical hit!");
                                 dmgToPlayer1 += player0.getPlayerInfo().getDmg() * 2;
                             } else {
@@ -72,8 +72,8 @@ public class InstanceThread extends Thread {
                         break;
 
                     case 1:
-                        if ((dieRoll + player0.getPlayerInfo().getDef()) > 8) {
-                            if ((dieRoll + player0.getPlayerInfo().getDef()) >= 19) {
+                        if ((dieRoll + getMod(player0.getPlayerInfo().getDef())) > 8) {
+                            if ((dieRoll + getMod(player0.getPlayerInfo().getDef())) >= 19) {
                                 player0.write("Amazing block!");
                                 player0DmgMod = (float) .2;
                             } else {
@@ -88,8 +88,8 @@ public class InstanceThread extends Thread {
                         break;
 
                     case 2:
-                        if ((dieRoll + player0.getPlayerInfo().getAgl()) > 8) {
-                            if ((dieRoll + player0.getPlayerInfo().getAgl()) >= 17) {
+                        if ((dieRoll + getMod(player0.getPlayerInfo().getAgl())) > 8) {
+                            if ((dieRoll + getMod(player0.getPlayerInfo().getAgl())) >= 17) {
                                 player0.write("Amazing dodge!");
                                 player0DmgMod = 0;
                             } else {
@@ -111,21 +111,23 @@ public class InstanceThread extends Thread {
 
                 switch (player1.getAction()) {
                     case 0:
-                        if ((dieRoll + player1.getPlayerInfo().getStr()) >= 19) {
-                            player1.write("Critical hit!");
-                            dmgToPlayer0 += player1.getPlayerInfo().getDmg() * 2;
-                        } else if (luckRoll > 96) {
-                            player1.write("You got a lucky hit!");
-                            dmgToPlayer0 += player1.getPlayerInfo().getDmg() * 1.6;
-                        } else {
-                            dmgToPlayer0 += player1.getPlayerInfo().getDmg();
+                    	if((dieRoll + getMod(player1.getPlayerInfo().getStr())) > 8) {
+                            if (dieRoll + getMod(player1.getPlayerInfo().getStr()) >= 19) {
+                                player1.write("Critical hit!");
+                                dmgToPlayer0 += player1.getPlayerInfo().getDmg() * 2;
+                            } else {
+                                dmgToPlayer0 += player1.getPlayerInfo().getDmg();
+                            }
                         }
-
+                        if (luckRoll > 96) {
+                            player1.write("You got a lucky hit!");
+                            dmgToPlayer1 += player1.getPlayerInfo().getDmg() * 1.6;
+                        }
                         break;
 
                     case 1:
-                        if ((dieRoll + player1.getPlayerInfo().getDef()) > 8) {
-                            if ((dieRoll + player1.getPlayerInfo().getDef()) >= 19) {
+                        if ((dieRoll + getMod(player1.getPlayerInfo().getDef())) > 8) {
+                            if ((dieRoll + getMod(player1.getPlayerInfo().getDef())) >= 19) {
                                 player1.write("Amazing block!");
                                 player1DmgMod = (float) .2;
                             } else {
@@ -140,8 +142,8 @@ public class InstanceThread extends Thread {
                         break;
 
                     case 2:
-                        if ((dieRoll + player1.getPlayerInfo().getAgl()) > 8) {
-                            if ((dieRoll + player1.getPlayerInfo().getAgl()) >= 17) {
+                        if ((dieRoll + getMod(player1.getPlayerInfo().getAgl())) > 8) {
+                            if ((dieRoll + getMod(player1.getPlayerInfo().getAgl())) >= 17) {
                                 player1.write("Amazing dodge!");
                                 player1DmgMod = 0;
                             } else {
@@ -177,10 +179,20 @@ public class InstanceThread extends Thread {
                 if ((currentHealths[0] <= 0) || (currentHealths[1] <= 0)) {
                     if ((currentHealths[0] <= 0) && (currentHealths[1] <= 0)) {
                         endMatch(5);
-                    } else if (currentHealths[0] <= 0) {
-                        endMatch(4);
-                    } else if (currentHealths[1] <= 0) {
-                        endMatch(3);
+                    } else if (currentHealths[0] <= 0) { // player 1 win
+                    	player1.getPlayerInfo().incWins();
+                    	if(player1.getPlayerInfo().getWins() % 5 == 0) {
+                        	player1.getPlayerInfo().levelUp();
+                        }
+                    	
+                    	endMatch(4);
+                    } else if (currentHealths[1] <= 0) { // player 0 win
+                    	player0.getPlayerInfo().incWins();
+                    	if(player0.getPlayerInfo().getWins() % 5 == 0) {
+                        	player0.getPlayerInfo().levelUp();
+                        }
+
+                    	endMatch(3);
                     }
 
                     player0.stopThread();
@@ -253,6 +265,10 @@ public class InstanceThread extends Thread {
         }
     }
 
+    private int getMod(int score) {
+    	return (int) Math.floor((score /2) - 5);
+    }
+    
     public void setPlayer0ActionQueued() {
         player0ActionQueued = true;
     }
