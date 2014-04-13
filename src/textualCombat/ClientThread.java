@@ -10,6 +10,10 @@ public class ClientThread extends Thread {
         return client;
     }
     
+    public PlayerCharacter getPlayerInfo() {
+        return client.getPlayerInfo();
+    }
+    
     public void write(String output) {
         client.write(output);
     }

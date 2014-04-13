@@ -32,9 +32,15 @@ public class SocketBundle {
         //Placeholder until actual login is working
         try {
             playerInfo = new PlayerCharacter(in.readLine());
+            playerInfo.setDmg(20);
+            playerInfo.setHealth(100);
         } catch (IOException e) {
             System.err.println("Problem reading from client.");
         }
+    }
+    
+    public PlayerCharacter getPlayerInfo() {
+        return playerInfo;
     }
     
     public void write(String input) {

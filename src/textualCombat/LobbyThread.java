@@ -34,8 +34,9 @@ public class LobbyThread extends Thread {
             System.out.println(client + " queued up for match making");
         } else {
             System.out.println("here");
-            InstanceThread it = new InstanceThread(matchMakingQueue, client);
+            InstanceThread it = new InstanceThread(matchMakingQueue.getSocketBundle(), client.getSocketBundle());
             it.start();
+            
             matchMakingQueue = null;
             clients.remove(client);
             System.out.println(matchMakingQueue + " and " + client + " have entered a match.");

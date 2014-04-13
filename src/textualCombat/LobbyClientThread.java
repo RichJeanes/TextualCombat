@@ -16,6 +16,10 @@ public class LobbyClientThread extends ClientThread{
         this.client = client;
     }
 
+    public void setSocketBundleNull() {
+        client = null;
+    }
+    
     @Override
     public void run() {
         String input = null;
@@ -26,11 +30,11 @@ public class LobbyClientThread extends ClientThread{
             System.out.println(client + " sent command " + input);
             
             try {
-                switch(input.toLowerCase()) {                 
+                switch(input.toLowerCase().trim()) {                 
                     case "queue":
                         parent.clientForMatchMaking(this);
                         System.out.println(client + " has requested to be queued.");
-                        break;
+                        return;
 
                     case "help":
                         client.write(printHelp());
@@ -38,6 +42,10 @@ public class LobbyClientThread extends ClientThread{
                         
                     case "exit":
                         client.close();
+                        break;
+                        
+                    case "whatdo":
+                        client.write(printWhatDo());
                         break;
                         
                     default:
@@ -49,13 +57,19 @@ public class LobbyClientThread extends ClientThread{
                 System.out.println("Connection terminated");
                 alive = false;
             }
+            
+            
         }
     }
     
     public String printHelp() {
-        return "\nAvailable commands:\n" +
+        return "\nAvailable lobby commands:\n" +
                "queue: Places you in the match making queue to find an opponent\n" +
                "help:  Print this help statement\n" +
                "exit:  Disconnect from Textual Combat server\n";
+    }
+    
+    public String printWhatDo() {
+        return "";
     }
 }
