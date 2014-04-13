@@ -1,7 +1,10 @@
 package textualCombat;
 
+import java.util.Random;
+
 public class InstanceThread extends Thread {
     
+    private Random rand = new Random();
     private InstanceClientThread player0, player1;
     private boolean player0ActionQueued, player1ActionQueued;
     private int[] currentHealths;
@@ -10,8 +13,6 @@ public class InstanceThread extends Thread {
         
         player0 = new InstanceClientThread(this, p0, 0);
         player1 = new InstanceClientThread(this, p1, 1);
-        
-        
         
         player0.start();
         player1.start();
@@ -43,28 +44,124 @@ public class InstanceThread extends Thread {
             } catch(InterruptedException ie) {}
             
             if(getBothPlayerActionQueued()) {
-                    // combat engage
-                   System.out.println("New combat turn!");
-                   
-                   
                    //do combat maths
+                   int dieRoll = rand.nextInt(20);
+                   int luckRoll = rand.nextInt(100);
+                   int dmgToPlayer0 = 0;
+                   float player0DmgMod = 1;
+                   int dmgToPlayer1 = 0;
+                   float player1DmgMod = 1;
+                   
                    switch(player0.getAction()) {
                        case 0:
-                           currentHealths[1] -= player0.client.getPlayerInfo().getDmg();
+                           if((dieRoll + player0.getPlayerInfo().getStr()) >= 19) {
+                               player0.write("Critical hit!");
+                               player0.write("You hit for " + (player0.getPlayerInfo().getDmg() * 2));
+                               dmgToPlayer1 += player0.getPlayerInfo().getDmg() * 2;
+                           } else if(luckRoll > 96) {
+                               player0.write("You got a lucky hit!");
+                               player0.write("You hit for " + (player0.getPlayerInfo().getDmg() * 1.6));
+                               dmgToPlayer1 += player0.getPlayerInfo().getDmg() * 1.6;
+                           } else {
+                               player0.write("You hit for " + player0.getPlayerInfo().getDmg());
+                               dmgToPlayer1 += player0.getPlayerInfo().getDmg();
+                           }
+                           
+                           break;
+                           
+                       case 1:
+                           if((dieRoll + player0.getPlayerInfo().getDef()) > 8) {
+                               if((dieRoll + player0.getPlayerInfo().getDef()) >= 19) {
+                                   player0.write("Amazing block!");
+                                   player0DmgMod = (float) .2;
+                               } else {
+                                   player0.write("Nice block!");
+                                   player0DmgMod = (float) .6;
+                               }
+                           }
+                           if(luckRoll > 96) {
+                               player0.write("You got in a lucky hit!");
+                               dmgToPlayer1 += player0.getPlayerInfo().getDmg() * .2;
+                           }
+                           break;
+                       
+                       case 2:
+                           if((dieRoll + player0.getPlayerInfo().getAgl()) > 8) {
+                               if((dieRoll + player0.getPlayerInfo().getAgl()) >= 17) {
+                                   player0.write("Amazing dodge!");
+                                   player0DmgMod = 0;
+                               } else {
+                                   player0.write("Nice dodge!");
+                                   player0DmgMod = (float) .6;
+                               }
+                               
+                               if(luckRoll > 96) {
+                               player0.write("You got in a lucky hit!");
+                               dmgToPlayer1 += player0.getPlayerInfo().getDmg() * .8;
+                               }
+                           }
                            break;
                    }
 
                    //do combat maths
+                   dieRoll = rand.nextInt(20);
+                   luckRoll = rand.nextInt(100);
+                   
                    switch(player1.getAction()) {
                        case 0:
-                           currentHealths[0] -= player1.client.getPlayerInfo().getDmg();
+                           if((dieRoll + player1.getPlayerInfo().getStr()) >= 19) {
+                               player1.write("Critical hit!");
+                               player1.write("You hit for " + (player1.getPlayerInfo().getDmg() * 2));
+                               dmgToPlayer0 += player1.getPlayerInfo().getDmg() * 2;
+                           } else if(luckRoll > 96) {
+                               player1.write("You got a lucky hit!");
+                               player1.write("You hit for " + (player0.getPlayerInfo().getDmg() * 1.6));
+                               dmgToPlayer0 += player1.getPlayerInfo().getDmg() * 1.6;
+                           } else {
+                               player1.write("You hit for " + player1.getPlayerInfo().getDmg());
+                               dmgToPlayer0 += player1.getPlayerInfo().getDmg();
+                           }
+                           
+                           break;
+                           
+                       case 1:
+                           if((dieRoll + player1.getPlayerInfo().getDef()) > 8) {
+                               if((dieRoll + player1.getPlayerInfo().getDef()) >= 19) {
+                                   player1.write("Amazing block!");
+                                   player1DmgMod = (float) .2;
+                               } else {
+                                   player1.write("Nice block!");
+                                   player1DmgMod = (float) .6;
+                               }
+                           }
+                           if(luckRoll > 96) {
+                               player1.write("You got in a lucky hit!");
+                               dmgToPlayer0 += player1.getPlayerInfo().getDmg() * .2;
+                           }
+                           break;
+                       
+                       case 2:
+                           if((dieRoll + player1.getPlayerInfo().getAgl()) > 8) {
+                               if((dieRoll + player1.getPlayerInfo().getAgl()) >= 17) {
+                                   player1.write("Amazing dodge!");
+                                   player1DmgMod = 0;
+                               } else {
+                                   player1.write("Nice dodge!");
+                                   player1DmgMod = (float) .6;
+                               }
+                               
+                               if(luckRoll > 96) {
+                               player1.write("You got in a lucky hit!");
+                               dmgToPlayer0 += player1.getPlayerInfo().getDmg() * .8;
+                               }
+                           }
                            break;
                    }
                    
-                   player0.write("You hit for " + player0.client.getPlayerInfo().getDmg());
-                   player0.write("You have " + currentHealths[0] + " health remaining");
+                   currentHealths[0] -= dmgToPlayer0 * player0DmgMod;
+                   currentHealths[1] -= dmgToPlayer1 * player1DmgMod;
                    
-                   player1.write("You hit for " + player1.client.getPlayerInfo().getDmg());
+                   player0.write("You have " + currentHealths[0] + " health remaining");
                    player1.write("You have " + currentHealths[1] + " health remaining");
                    
                    //determine if match is over

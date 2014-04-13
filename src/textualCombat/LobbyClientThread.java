@@ -48,6 +48,10 @@ public class LobbyClientThread extends ClientThread{
                         client.write(printWhatDo());
                         break;
                         
+                    case "stopservernowplz":
+                        MainThread.stopServer();
+                        break;
+                        
                     default:
                         client.write("Invalid command: " + input);
                         client.write("Type 'help' for a list of valid commands.");
@@ -63,10 +67,10 @@ public class LobbyClientThread extends ClientThread{
     }
     
     public String printHelp() {
-        return "\nAvailable lobby commands:\n" +
-               "queue: Places you in the match making queue to find an opponent\n" +
-               "help:  Print this help statement\n" +
-               "exit:  Disconnect from Textual Combat server\n";
+        return "\r\nAvailable lobby commands:\r\n" +
+               "queue: Places you in the match making queue to find an opponent\r\n" +
+               "help:  Print this help statement\r\n" +
+               "exit:  Disconnect from Textual Combat server\r\n";
     }
     
     public String printWhatDo() {

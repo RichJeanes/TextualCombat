@@ -22,8 +22,8 @@ public class SocketBundle {
             System.err.println("Error creating socket IO");
         }
         
-        out.println("\n\nWelcome to Textual Combat!!!\n");
-        out.println("What is your user name?");
+        out.print("\r\n\r\nWelcome to Textual Combat!!!\r\n\r\n");
+        out.print("What is your user name?\r\n");
         
         //TODO Read user input and validate against db
         //If username does not exist, prompt to create account
@@ -44,7 +44,7 @@ public class SocketBundle {
     }
     
     public void write(String input) {
-        out.println(input);
+        out.print(input + "\r\n");
         out.flush();
     }
     
