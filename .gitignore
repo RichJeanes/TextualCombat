@@ -1,2 +1,7 @@
 bin/
-/dist/
+dist/
+build/
+build.xml
+nbproject
+manifest.mf
+
