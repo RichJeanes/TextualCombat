@@ -38,7 +38,7 @@ public class login {
     String table_char = "char";
 
     public login() {
-        dynamoDB = new AmazonDynamoDBClient(new BasicAWSCredentials("AKIAJ5SII452HJCXONUA", "sWfx902vRvsr/2C0p9ORQE4yMnCg69lQjBJ+p1Gh"));
+        dynamoDB = new AmazonDynamoDBClient(new BasicAWSCredentials("/*Credentials Withheld*/", "/*For Security Reasons*/"));
         Region usWest2 = Region.getRegion(Regions.US_WEST_2);
         dynamoDB.setRegion(usWest2);
         return;
